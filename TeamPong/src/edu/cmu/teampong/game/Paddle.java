@@ -1,3 +1,5 @@
+package edu.cmu.teampong.game;
+
 
 
 import java.awt.Color;
@@ -20,6 +22,8 @@ public class Paddle extends Entity {
         this.height = height;
         this.c = c;
         this.pontuacao = 0;
+        dx = 0;
+        dy = 0;
     }
 
     public void setPontuacao(int p) {
@@ -40,24 +44,33 @@ public class Paddle extends Entity {
 
     @Override
     public void move(long delta) {
-        if (dy < 0 && y < 0 || dy > 0 && y+height > game.getHeight())
+        if (y <= 0) {
+        	y = 0;
+        	return;
+        } else if (y+height >= game.getHeight()) {
+            y = game.getHeight()-height;
             return;
-
-        super.move(delta);
+        }
+        super.move(delta);;
     }
 
-    public void goUP() {
-    	//y = y - netpositive	
-        setVelocityY(-game.velocity);
+    public void goUP(int dy) {
+        //setVelocityY(0);
+    	this.y = this.y - dy;
+
+        //setVelocityY(-game.velocity);
     }
 
-    public void goDOWN() {
-    	//y = y - netnegative
-        setVelocityY(game.velocity);
+    public void goDOWN(int dy) {
+        //setVelocityY(0);
+    	//move((long)dy);
+    	this.y = this.y + dy;
+   
+        //setVelocityY(game.velocity);
     }
 
     public void stopMoving() {
-        setVelocityY(0);
+        return;
     }
 
     // draws a rectangle
