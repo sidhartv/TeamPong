@@ -1,3 +1,5 @@
+package edu.cmu.teampong.game;
+
 
 import java.awt.Canvas;
 import java.awt.Color;
@@ -321,15 +323,15 @@ public class Game extends Canvas {
 
             // paddle da direita
             if (key == KeyEvent.VK_UP) {
-                paddles.get(1).goUP();
+                paddles.get(1).goUP(20);
             } else if (key == KeyEvent.VK_DOWN)
-                paddles.get(1).goDOWN();
+                paddles.get(1).goDOWN(20);
             
             // paddle da esquerda
             if (key == KeyEvent.VK_A)
-                paddles.get(0).goUP();
+                paddles.get(0).goUP(20);
             else if (key == KeyEvent.VK_Z)
-                paddles.get(0).goDOWN();
+                paddles.get(0).goDOWN(20);
         }
 
         public void keyReleased(KeyEvent e) {
