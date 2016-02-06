@@ -1,9 +1,4 @@
 package edu.cmu.teampong.game;
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -86,3 +81,4 @@ public abstract class Entity {
 
     public abstract void draw(Graphics2D g);
 }
+
