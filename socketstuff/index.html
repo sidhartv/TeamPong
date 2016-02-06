@@ -10,9 +10,14 @@
 
   <body>
     <div class="container-fluid">
+            <input type="image" id="up_arrow" src="img/red_up.png" alt="up">
+
               <button id="arrow" type="UpHand" onclick="socket.emit('chat message', '1');" 
                           class="glyphicon glyphicon-hand-up btn btn-lg center-block"></button>
               <h1 class="center-block">TEAM <div id="team"></div></h1>
+
+            <input type="image" id="down_arrow" src="img/red_down.png" alt="up">
+
               <button id="arrow" type="DownHand" onclick="socket.emit('chat message', '-1');" 
                   class="glyphicon glyphicon-hand-down center-block btn"
                   style="width:200px;height:200px">
@@ -31,6 +36,10 @@
         $("button").css("background","green");
         socket.on('team', function(msg) {
         	  $('div#team').html(msg);
+            if (msg === "blue") {
+              $("#up_arrow").attr('src','img/blue_up.png');
+              $("#down_arrow").attr('src','img/blue_down.png');
+            }
             $("button").css("background",msg);
         });  
     </script>
