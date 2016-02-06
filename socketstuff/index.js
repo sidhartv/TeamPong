@@ -38,9 +38,10 @@ io.on('connection', function(socket){
         io.emit('team', 'blue');
         right++;
     }
-    console.log('a user connected');
+    console.log('a user connected\nTeam Breakdown--  Left: '/
+                                       + left + ' Right: ' + right);
     socket.on('chat message', function(msg){
-        console.log('Choice ' + msg + ' Team: ' + name);
+        console.log('Choice: ' + msg + ' Team: ' + name);
         io.emit('chat message', '1');
         
         // Update clicks for each team
@@ -54,10 +55,14 @@ io.on('connection', function(socket){
         s.write(name + parseInt(msg)+ '\n');
     });
     socket.on('disconnect', function(){
-        console.log('user disconnected');
+        // subtract members when team players disconnect
         if(team == 0) {
-            red--;
+            left--;
+        } else if(team == 1) {
+            right--;
         }
+        console.log('user disconnected\nTeam Breakdown--  Left: '/
+                                       + left + ' Right: ' + right);
     });
 });
 
