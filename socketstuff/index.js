@@ -10,17 +10,17 @@ var io = require('socket.io')(http);
 
 // Configure another socket and connect to the game server
 var s = require('net').Socket();
-s.connect(1302, '128.237.138.106');
+//s.connect(1302, '128.237.138.106');
 
 // Keep count of the number of people on each team
 var left = 0;
 var right = 0;
 
 // Keep track of their clicks too!
-var leftlclicks = 0;
+var leftclicks = 0;
 var rightclicks = 0;
 
-// initial response to requests
+// respond to requests with index.html file
 app.get('/', function(req, res){
     res.sendFile(__dirname + '/index.html');
 });
@@ -28,7 +28,9 @@ app.get('/', function(req, res){
 
 // a person connects
 io.on('connection', function(socket){
+    console.log('please say something');
     var team = Math.floor(Math.random() * 2);
+    console.log("Connected");
     if(team == 0) {
         name = 'L';
         io.emit('team', 'red');
@@ -38,8 +40,7 @@ io.on('connection', function(socket){
         io.emit('team', 'blue');
         right++;
     }
-    console.log('a user connected\nTeam Breakdown--  Left: '/
-                                       + left + ' Right: ' + right);
+    //console.log('a user connected\nTeam Breakdown--  Left: ' + left + ' Right: ' + right);
     socket.on('chat message', function(msg){
         console.log('Choice: ' + msg + ' Team: ' + name);
         io.emit('chat message', '1');
@@ -48,21 +49,24 @@ io.on('connection', function(socket){
         if(team == 0) {
             leftclicks++;
         } else if(team == 1) {
-            rightclick++;
+            rightclicks++;
         }
         // send 'L' or 'R' for left or right and '-1' or '1' depending on
         // which button is pressed
-        s.write(name + parseInt(msg)+ '\n');
+        //s.write(name + parseInt(msg)+ '\n');
+    });
+    socket.on('yes', function(msg){
+        console.log(msg);
     });
     socket.on('disconnect', function(){
+        console.log('disconnected');
         // subtract members when team players disconnect
         if(team == 0) {
             left--;
         } else if(team == 1) {
             right--;
         }
-        console.log('user disconnected\nTeam Breakdown--  Left: '/
-                                       + left + ' Right: ' + right);
+        //console.log('user disconnected\nTeam Breakdown--  Left: ' + left + ' Right: ' + right);
     });
 });
 

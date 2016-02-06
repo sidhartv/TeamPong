@@ -9,32 +9,29 @@
   </head>
 
   <body>
-
-    <div class="container">          
-        <button type="UpHand" onclick="socket.emit('chat message', '1');" class="btn btn-lg center-block">
-        <span class="glyphicon glyphicon-hand-up" aria-hidden="true"></span>
-        </button>
-         <h1 id = "team" class="center-block">TEAM</h1>
-		<button type="DownHand" onclick="socket.emit('chat message', '-1');" class="btn btn-lg center-block">
-        <span class="glyphicon glyphicon-hand-down" aria-hidden="true"></span>
-        </button>
-    </div>  
+    <div class="container-fluid">
+              <button id="arrow" type="UpHand" onclick="socket.emit('chat message', '1');" 
+                          class="glyphicon glyphicon-hand-up btn btn-lg center-block"></button>
+              <h1 class="center-block">TEAM <div id="team"></div></h1>
+              <button id="arrow" type="DownHand" onclick="socket.emit('chat message', '-1');" 
+                  class="glyphicon glyphicon-hand-down center-block btn"
+                  style="width:200px;height:200px">
+              </button>
+    </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
         var socket = io();
         var clicks = 0;
-        var teamname = "red";
         // Use this to respond to messages that are sent
         socket.on('chat message', function(msg){
             clicks += 1;
         });
-
-        socket.on('team', function(msg)) {
-        	teamname = msg;
-        	$("#team").text(teamname);
-        }
-
+        $("button").css("background","green");
+        socket.on('team', function(msg) {
+        	  $('div#team').html(msg);
+            $("button").css("background",msg);
+        });  
     </script>
   </body>
 </html>
