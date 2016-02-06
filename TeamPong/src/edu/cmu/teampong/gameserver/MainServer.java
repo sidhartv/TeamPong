@@ -7,20 +7,32 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import edu.cmu.teampong.game.Game;
+
 public class MainServer {
 	public static void main (String[] args) {
+		Game game = new Game();
+		Runnable gameBackground = new Runnable() {
+			@Override
+			public void run() {
+				game.gameLoop();
+			}
+		};
+		Thread t = new Thread(gameBackground);
+		t.start();
 		ServerSocket servSock = null;
 		try {
 			servSock = new ServerSocket(1302);
 
 		} catch(IOException e) {
-			System.err.println("Server socket binding fail: Port 132");
+			System.err.println("Server socket binding fail: Port 1302");
 			return;
 		}
 		while(true) {
 			Socket clientSock = null;
 			try {
 				clientSock = servSock.accept();
+				game.receiveStart();
 				if (clientSock != null) {
 					System.out.println("Accepted from " + clientSock.getRemoteSocketAddress());
 				}
@@ -56,6 +68,8 @@ public class MainServer {
 						}
 					} else {
 						begin = System.currentTimeMillis();
+						game.receiveValues(0, totals[0]);
+						game.receiveValues(1, totals[1]);
 						System.out.println("LEFT = " + totals[0] + " RIGHT = " + totals[1]);
 						if (order.getSide() == Side.LEFT) {
 							totals[0] = order.getOrderedY();
