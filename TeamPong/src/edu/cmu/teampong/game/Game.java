@@ -61,8 +61,8 @@ public class Game extends Canvas {
         frame = new JFrame("Ping Pong");
 
         // add keyboard listener
-        addKeyListener(new Keyboard());
-
+        //addKeyListener(new Keyboard());
+        
         // add canvas
         frame.add(this);
 
@@ -95,7 +95,7 @@ public class Game extends Canvas {
         // game
         init();
         goToMenu();
-        gameLoop();
+        //gameLoop();
     }
 
     // adds an entity to the game
@@ -171,6 +171,17 @@ public class Game extends Canvas {
         ball.setVelocity(dx, dy);
     }
 
+    public void receiveValues(int paddle, int moveBy) {
+    	paddles.get(paddle).goUP(moveBy);
+    }
+    public void receiveStart() {
+    	begin = false;
+    }
+    public void receiveStop() {
+    	begin = true;
+    }
+    
+    
     public void goToMenu() {
         pause = false;
         begin = true;
@@ -248,7 +259,7 @@ public class Game extends Canvas {
         g.drawString(""+pontuacao, 450, 400);
     }
 
-    private void gameLoop() {
+    public void gameLoop() {
         long lastLoop = System.currentTimeMillis();
         long delta;
 
@@ -313,7 +324,9 @@ public class Game extends Canvas {
         new Game();
     }
 
-    class Keyboard implements KeyListener {
+    
+    
+    /*class Keyboard implements KeyListener {
 
         public void keyTyped(KeyEvent e) {
         }
@@ -354,6 +367,6 @@ public class Game extends Canvas {
                 paddles.get(0).stopMoving();
         }
             
-        }
+        } */
     }
 
