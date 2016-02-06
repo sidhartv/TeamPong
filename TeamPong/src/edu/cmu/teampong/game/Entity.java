@@ -1,4 +1,3 @@
-package edu.cmu.teampong.game;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -81,4 +80,3 @@ public abstract class Entity {
 
     public abstract void draw(Graphics2D g);
 }
-

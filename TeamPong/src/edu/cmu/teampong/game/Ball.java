@@ -1,9 +1,12 @@
-package edu.cmu.teampong.game;
+
+
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 
 /**
+ *
  * @author pchambino
  */
 public class Ball extends Entity {
@@ -32,9 +35,6 @@ public class Ball extends Entity {
         // ball hits top or bottom limits
         if (dy < 0 && y < 0 || dy > 0 && y+diameter > game.getHeight())
         {
-            // plays pong sound
-            game.playClip(game.pongClip);
-
             // change direction
             dy *= -1;
         }
@@ -52,7 +52,8 @@ public class Ball extends Entity {
 
     @Override
     public void draw(Graphics2D g) {
-        g.setColor(Color.WHITE);
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setColor(Color.DARK_GRAY);
         g.fillOval(x, y, diameter, diameter);
     }
 }

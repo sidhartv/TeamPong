@@ -1,4 +1,3 @@
-package edu.cmu.teampong.game;
 
 import java.awt.Canvas;
 import java.awt.Color;
@@ -8,6 +7,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
@@ -53,15 +53,12 @@ public class Game extends Canvas {
     // game types, single player has AI
     private enum gameType {SINGLE_PLAYER, TWO_PLAYERS};
     private gameType type;
-    // sounds
-    private Clip pingClip;
-    public Clip pongClip;
 
     public Game() {
         // frame
         frame = new JFrame("Ping Pong");
 
-        // add keyborad listener
+        // add keyboard listener
         addKeyListener(new Keyboard());
 
         // add canvas
@@ -110,44 +107,17 @@ public class Game extends Canvas {
         paddles = new ArrayList<Paddle>(2);
 
         // size of paddles
-        int width = 10;
+        int width = 15;
         int height = 150;
 
-        paddles.add(new Paddle(this, width, height));
-        paddles.add(new Paddle(this, width, height));
+        paddles.add(new Paddle(this, width, height, Color.decode("#e05252")));
+        paddles.add(new Paddle(this, width, height, Color.decode("#3ed6ea")));
 
         // size of ball
         int diameter = 20;
-
+        
         ball = new Ball(this, diameter);
-
-        // load sounds
-        try {
-            // ping
-            InputStream stream = this.getClass().getResourceAsStream("Sounds/ping.wav");
-
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(stream);
-            DataLine.Info info = new DataLine.Info(Clip.class,audioStream.getFormat());
-
-            pingClip = (Clip) AudioSystem.getLine(info);
-            pingClip.open(audioStream);
-
-            // pong
-            stream = this.getClass().getResourceAsStream("Sounds/pong.wav");
-
-            audioStream = AudioSystem.getAudioInputStream(stream);
-            info = new DataLine.Info(Clip.class,audioStream.getFormat());
-
-            pongClip = (Clip) AudioSystem.getLine(info);
-            pongClip.open(audioStream);
-        } catch (LineUnavailableException ex) {
-            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UnsupportedAudioFileException ex) {
-            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+        
         // init variables
         running = true;
         pause = false;
@@ -167,11 +137,11 @@ public class Game extends Canvas {
         // inicial x os paddles
         int x = 20;
 
-        // set inicial positions
+        // set initial positions
         paddles.get(0).setPosition( x, size.height/2-height/2);
         paddles.get(1).setPosition( size.width-x-width, size.height/2-height/2);
 
-        // set inicial velocity to zero
+        // set initial velocity to zero
         paddles.get(0).stopMoving();
         paddles.get(1).stopMoving();
 
@@ -218,7 +188,7 @@ public class Game extends Canvas {
     private void testCollisions() {
         boolean hits = false;
 
-        // check: bate na paddle da esquerda
+        // check: hits left paddle
         Paddle paddle = paddles.get(0);
         if (ball.getPositionX() < paddle.getPositionX()+paddle.getWidth()
                 && ball.getPositionY()+ball.getDiameter() > paddle.getPositionY()
@@ -229,7 +199,7 @@ public class Game extends Canvas {
 
         // se nao bateu
         if (!hits) {
-            // check: bate na paddle da direita
+            // check: hits the right paddle
             paddle = paddles.get(1);
             if (ball.getPositionX()+ball.getDiameter() > paddle.getPositionX()
                     && ball.getPositionY()+ball.getDiameter() > paddle.getPositionY()
@@ -241,9 +211,6 @@ public class Game extends Canvas {
 
         // hits
         if (hits) {
-            // play ping sound
-            playClip(pingClip);
-
             // aumenta velocidade em x e altera velocidade em y
             ball.setVelocityX((int)(-ball.getVelocityX()*1.05));
             ball.setVelocityY((int)((ball.getPositionY() + ball.getDiameter()/2 - paddle.getPositionY() - paddle.getHeight()/2)
@@ -252,17 +219,10 @@ public class Game extends Canvas {
     }
 
     private void drawBackground(Graphics2D g) {
-        // titulo
-        g.setColor(Color.DARK_GRAY);
-        g.setFont(new Font("Courier", Font.BOLD, 100));
-        g.drawString("PING PONG", 125, 70);
-
-        // linha do meio
-        g.fillRect(size.width/2-10, 0, 20, size.height);
-        g.fillOval(size.width/2-20, size.height/2-20, 40, 40);
-
+        g.setColor(Color.WHITE);
+       
         // pontuacoes
-        g.setFont(new Font("Courier", Font.PLAIN, 400));
+        g.setFont(new Font("Helvetica", Font.PLAIN, 400));
 
         // pontuacao da paddle da esquerda
         int pontuacao = paddles.get(0).getPontuacao();
@@ -271,7 +231,10 @@ public class Game extends Canvas {
 
             pontuacao -= 10;
         }
-        g.drawString(""+pontuacao, 110, 400);
+
+        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, 
+        		RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        g.drawString(""+pontuacao, 135, 400);
 
         // pontuacao da paddle da direita
         pontuacao = paddles.get(1).getPontuacao();
@@ -296,7 +259,7 @@ public class Game extends Canvas {
             g = (Graphics2D) strategy.getDrawGraphics();
 
             // clean screen
-            g.setColor(Color.BLACK);
+            g.setColor(Color.decode("#ebebeb"));
             g.fillRect(0, 0, getWidth(), getHeight());
 
             // for the entities
@@ -307,8 +270,8 @@ public class Game extends Canvas {
                 testCollisions();
 
                 // do AI if needed
-                if (type == gameType.SINGLE_PLAYER)
-                    paddles.get(0).doAI();
+//                if (type == gameType.SINGLE_PLAYER)
+//                    paddles.get(0).doAI();
 
                 // move all entities
                 for (int i = 0; i < entities.size(); i++) {
@@ -323,27 +286,10 @@ public class Game extends Canvas {
 
             if (pause) {
                 g.setColor(Color.WHITE);
-                g.setFont(new Font("Courier", Font.PLAIN, 200));
+                g.setFont(new Font("Helvetica", Font.PLAIN, 200));
                 g.drawString("Paused", 40, 350);
             }
 
-            if (begin) {
-                g.setColor(Color.WHITE);
-                g.setFont(new Font("Courier", Font.PLAIN, 120));
-                g.drawString("Start Game", 40, 300);
-                g.setFont(new Font("Courier", Font.PLAIN, 25));
-                g.drawString("1 - Single Player", 300, 350);
-                g.drawString("2 - Two Players", 300, 380);
-
-                // instructions
-                g.setFont(new Font("Courier", Font.PLAIN, 20));
-                g.drawString("Intructions:", 10, 460);
-                g.drawString("Left Racket: A, Z", 10, 480);
-                g.drawString("Right Racket: UP, DOWN", 10, 500);
-                g.drawString("Pause: P", 10, 520);
-                g.drawString("Menu: M", 10, 540);
-                g.drawString("Quit: Q", 10, 560);
-            }
 
             // draw all entities
             for (int i = 0; i < entities.size(); i++) {
@@ -374,9 +320,9 @@ public class Game extends Canvas {
             int key = e.getKeyCode();
 
             // paddle da direita
-            if (key == KeyEvent.VK_UP)
+            if (key == KeyEvent.VK_UP) {
                 paddles.get(1).goUP();
-            else if (key == KeyEvent.VK_DOWN)
+            } else if (key == KeyEvent.VK_DOWN)
                 paddles.get(1).goDOWN();
             
             // paddle da esquerda
@@ -390,62 +336,22 @@ public class Game extends Canvas {
             int key = e.getKeyCode();
 
             // set game type and start game
-            if (key == KeyEvent.VK_1) {
-                type = gameType.SINGLE_PLAYER;
-                begin = false;
-            } else if (key == KeyEvent.VK_2) {
+            if (key == KeyEvent.VK_SPACE) {
                 type = gameType.TWO_PLAYERS;
                 begin = false;
             }
-
-            // go to Menu
-            if (key == KeyEvent.VK_M) {
-                goToMenu();
-            }
-
-            // pause game
-            if (key == KeyEvent.VK_P && !begin)
-                pause = !pause;
-
-            // quit game
-            if (key == KeyEvent.VK_Q)
-                quit();
-
-            // paddle da direita
-            if (key == KeyEvent.VK_UP || key == KeyEvent.VK_DOWN)
+            if (key == KeyEvent.VK_UP) {
                 paddles.get(1).stopMoving();
-
+            } else if (key == KeyEvent.VK_DOWN)
+                paddles.get(1).stopMoving();
+            
             // paddle da esquerda
-            if (key == KeyEvent.VK_A || key == KeyEvent.VK_Z)
+            if (key == KeyEvent.VK_A)
+                paddles.get(0).stopMoving();
+            else if (key == KeyEvent.VK_Z)
                 paddles.get(0).stopMoving();
         }
-    }
-
-    public void playClip(Clip clip) {
-        new PlayClip(clip);
-    }
-
-    class PlayClip implements Runnable {
-        Clip clip;
-
-        public PlayClip(Clip clip) {
-            this.clip = clip;
-
-            Thread thread = new Thread(this);
-            thread.start();
+            
         }
-
-        public void run() {
-            clip.start();
-
-            try {
-                Thread.sleep(clip.getMicrosecondLength()/100);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-            clip.stop();
-        }
-
     }
-}
+

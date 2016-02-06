@@ -1,8 +1,8 @@
-package edu.cmu.teampong.game;
 
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 
 /**
  *
@@ -11,13 +11,14 @@ import java.awt.Graphics2D;
 public class Paddle extends Entity {
     private int width;
     private int height;
-
+    private Color c;
     private int pontuacao;
 
-    public Paddle(Game game, int width, int height) {
+    public Paddle(Game game, int width, int height, Color c) {
         super(game);
         this.width = width;
         this.height = height;
+        this.c = c;
         this.pontuacao = 0;
     }
 
@@ -46,10 +47,12 @@ public class Paddle extends Entity {
     }
 
     public void goUP() {
+    	//y = y - netpositive	
         setVelocityY(-game.velocity);
     }
 
     public void goDOWN() {
+    	//y = y - netnegative
         setVelocityY(game.velocity);
     }
 
@@ -60,16 +63,9 @@ public class Paddle extends Entity {
     // draws a rectangle
     @Override
     public void draw(Graphics2D g) {
-        g.setColor(Color.WHITE);
-        g.fillRect(x, y, width, height);
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setColor(c);
+        g.fillRoundRect(x, y, width, height,10,10);
     }
-
-    public void doAI() {
-        if (game.ball.getPositionY() < y+height/3)
-            goUP();
-        else if (game.ball.getPositionY() > y+height*2/3)
-            goDOWN();
-        else
-            stopMoving();
-    }
+    
 }

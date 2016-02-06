@@ -9,6 +9,7 @@
   </head>
 
   <body>
+<<<<<<< HEAD
     <div class="container-fluid">
               <button id="arrow" type="UpHand" onclick="socket.emit('chat message', '1');" 
                           class="glyphicon glyphicon-hand-up btn btn-lg center-block"></button>
@@ -19,8 +20,21 @@
               </button>
     </div>
     <script src="/socket.io/socket.io.js"></script>
+=======
+           <h1 id="teams">hi</h1>
+    <div class="container">          
+        <button type="UpHand" onclick="socket.emit('chat message', '1');" class="btn btn-lg center-block">
+        <span class="glyphicon glyphicon-hand-up" aria-hidden="true"></span>
+        </button>
+		<button type="DownHand" onclick="socket.emit('chat message', '-1');" class="btn btn-lg center-block">
+        <span class="glyphicon glyphicon-hand-down" aria-hidden="true"></span>
+        </button>
+    </div> 
+>>>>>>> 1754488367c315306d2d7181e6586f0ce571bd73
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <script>
+<<<<<<< HEAD
         var socket = io();
         var clicks = 0;
         // Use this to respond to messages that are sent
@@ -32,6 +46,19 @@
         	  $('div#team').html(msg);
             $("button").css("background",msg);
         });  
+=======
+	    var socket = io();
+	    var clicks = 0;
+	    var teamname = "red";
+	    // Use this to respond to messages that are sent
+	    socket.on('chat message', function(msg){
+	    	clicks += 1;
+	    });
+	    socket.on('team', function(msg)) {
+	    teamname = msg;
+	       	$('h1').text(teamname);
+	    }
+>>>>>>> 1754488367c315306d2d7181e6586f0ce571bd73
     </script>
   </body>
 </html>
