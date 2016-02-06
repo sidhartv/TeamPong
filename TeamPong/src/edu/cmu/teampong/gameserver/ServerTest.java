@@ -23,7 +23,7 @@ public class ServerTest {
 				} else {
 					dos.writeBytes("R1\n");
 				}
-			}
+			} 
 			
 				
 		}
