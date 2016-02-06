@@ -172,7 +172,7 @@ public class Game extends Canvas {
     }
 
     public void receiveValues(int paddle, int moveBy) {
-    	paddles.get(paddle).goUP(moveBy);
+    	paddles.get(paddle).goUP(moveBy * 3);
     }
     public void receiveStart() {
     	begin = false;

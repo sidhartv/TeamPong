@@ -6,12 +6,30 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class ServerTest {
-	public static void main(String[] args) throws UnknownHostException, IOException {
+	public static void main(String[] args) throws UnknownHostException, IOException, InterruptedException {
 		Socket sock = new Socket ("localhost",1302);
 		DataOutputStream dos = new DataOutputStream(sock.getOutputStream());
-		dos.writeBytes("L34\n");
-		dos.writeBytes("R45\n");
-		sock.close();
+		while(true) {
+			if (Math.random() < 0.5) {
+				if (Math.random() < 0.5) {
+					dos.writeBytes("L-1\n");
+				} else {
+					dos.writeBytes("L1\n");
+				}
+			} else {
+				if (Math.random() < 0.5) {
+					dos.writeBytes("R-1\n");
+				} else {
+					dos.writeBytes("R1\n");
+				}
+			}
+			
+				
+		}
+		
+		
+		
+		
 		
 	}
 }
