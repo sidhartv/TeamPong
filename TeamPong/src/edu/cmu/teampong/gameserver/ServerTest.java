@@ -7,6 +7,7 @@ import java.net.UnknownHostException;
 
 public class ServerTest {
 	public static void main(String[] args) throws UnknownHostException, IOException, InterruptedException {
+		@SuppressWarnings("resource")
 		Socket sock = new Socket ("localhost",1302);
 		DataOutputStream dos = new DataOutputStream(sock.getOutputStream());
 		while(true) {
