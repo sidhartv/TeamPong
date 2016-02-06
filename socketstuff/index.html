@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <div class="panel panel-default">
+        <div class="panel-heading panel-info">Panel Heading</div>
+        <div class="panel-body panel-info">Panel Content</div>
+    </div>  
+    <div class="container">          
+        <button type="button" onclick="socket.emit('chat message', '4');" class="btn btn-lg btn-primary">Press for Blue</button>
+        <button type="button" onclick="socket.emit('chat message', '1');" class="btn btn-lg btn-success">Press for Green</button>
+        <button type="button" onclick="socket.emit('chat message', '2');" class="btn btn-lg btn-warning">Press for Orange</button>
+        <button type="button" onclick="socket.emit('chat message', '3');" class="btn btn-lg btn-danger">Press for Red</button>
+    </div>  
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+        var socket = io();
+        var clicks = 0;
+        // Use this to respond to messages that are sent
+        socket.on('chat message', function(msg){
+            clicks += parseInt(msg);
+        });
+    </script>
+  </body>
+</html>
+
+
+
+
+
