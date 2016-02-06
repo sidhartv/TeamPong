@@ -9,32 +9,29 @@
   </head>
 
   <body>
-
+           <h1 id="teams">hi</h1>
     <div class="container">          
         <button type="UpHand" onclick="socket.emit('chat message', '1');" class="btn btn-lg center-block">
         <span class="glyphicon glyphicon-hand-up" aria-hidden="true"></span>
         </button>
-         <h1 id = "team" class="center-block">TEAM</h1>
 		<button type="DownHand" onclick="socket.emit('chat message', '-1');" class="btn btn-lg center-block">
         <span class="glyphicon glyphicon-hand-down" aria-hidden="true"></span>
         </button>
-    </div>  
-    <script src="/socket.io/socket.io.js"></script>
+    </div> 
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <script>
-        var socket = io();
-        var clicks = 0;
-        var teamname = "red";
-        // Use this to respond to messages that are sent
-        socket.on('chat message', function(msg){
-            clicks += 1;
-        });
-
-        socket.on('team', function(msg)) {
-        	teamname = msg;
-        	$("#team").text(teamname);
-        }
-
+	    var socket = io();
+	    var clicks = 0;
+	    var teamname = "red";
+	    // Use this to respond to messages that are sent
+	    socket.on('chat message', function(msg){
+	    	clicks += 1;
+	    });
+	    socket.on('team', function(msg)) {
+	    teamname = msg;
+	       	$('h1').text(teamname);
+	    }
     </script>
   </body>
 </html>
