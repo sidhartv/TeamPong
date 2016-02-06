@@ -33,7 +33,6 @@
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
     <script>
         var socket = io();
         var clicks = 0;
@@ -41,15 +40,15 @@
         socket.on('chat message', function(msg){
             clicks += 1;
         });
-        $("button").css("background","green");
-        socket.on('team', function(msg) {
-        	  $('div#team').html(msg);
-            if (msg === "blue") {
-              $("#up_arrow").attr('src','blue_up.png');
-              $("#down_arrow").attr('src','blue_down.png');
-            }
-            $("button").css("background",msg);
-        });  
+        // $("button").css("background","green");
+        // socket.on('team', function(msg) {
+        // 	  $('div#team').html(msg);
+        //     if (msg === "blue") {
+        //       $("#up_arrow").attr('src','blue_up.png');
+        //       $("#down_arrow").attr('src','blue_down.png');
+        //     }
+        //     $("button").css("background",msg);
+        // });  
     </script>
   </body>
 </html>
