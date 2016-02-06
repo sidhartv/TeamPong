@@ -28,9 +28,7 @@ app.get('/', function(req, res){
 
 // a person connects
 io.on('connection', function(socket){
-    console.log('please say something');
     var team = Math.floor(Math.random() * 2);
-    console.log("Connected");
     if(team == 0) {
         name = 'L';
         io.emit('team', 'red');
@@ -40,7 +38,7 @@ io.on('connection', function(socket){
         io.emit('team', 'blue');
         right++;
     }
-    //console.log('a user connected\nTeam Breakdown--  Left: ' + left + ' Right: ' + right);
+    console.log('a user connected\nTeam Breakdown--  Left: ' + left + ' Right: ' + right);
     socket.on('chat message', function(msg){
         console.log('Choice: ' + msg + ' Team: ' + name);
         io.emit('chat message', '1');
@@ -66,7 +64,7 @@ io.on('connection', function(socket){
         } else if(team == 1) {
             right--;
         }
-        //console.log('user disconnected\nTeam Breakdown--  Left: ' + left + ' Right: ' + right);
+        console.log('user disconnected\nTeam Breakdown--  Left: ' + left + ' Right: ' + right);
     });
 });
 
