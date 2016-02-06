@@ -1,20 +1,26 @@
 
+// Take in command line arguments to determine port No.
 var args = process.argv
 var port = args[2]
 
+// Configure websocket, used for running the webserver
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
+// Configure another socket and connect to the game server
 var s = require('net').Socket();
 s.connect(1302, '128.237.138.106');
 
 // Keep count of the number of people on each team
-var red = 0;
-var orange = 0;
-var green = 0;
-var blue = 0;
+var left = 0;
+var right = 0;
 
+// Keep track of their clicks too!
+var leftlclicks = 0;
+var rightclicks = 0;
+
+// initial response to requests
 app.get('/', function(req, res){
     res.sendFile(__dirname + '/index.html');
 });
@@ -22,17 +28,30 @@ app.get('/', function(req, res){
 
 // a person connects
 io.on('connection', function(socket){
-    var team = Math.floor(Math.random() * 5);
-    console.log('a user connected');
+    var team = Math.floor(Math.random() * 2);
     if(team == 0) {
-        red++;
+        name = 'L';
+        io.emit('team', 'red');
+        left++;
+    } else if(team == 1) {
+        name = 'R';
+        io.emit('team', 'blue');
+        right++;
     }
+    console.log('a user connected');
     socket.on('chat message', function(msg){
-        console.log('chat message ' + msg + 'Team: ' + team);
-        io.emit('chat message', msg);
+        console.log('Choice ' + msg + ' Team: ' + name);
+        io.emit('chat message', '1');
+        
+        // Update clicks for each team
+        if(team == 0) {
+            leftclicks++;
+        } else if(team == 1) {
+            rightclick++;
+        }
         // send 'L' or 'R' for left or right and '-1' or '1' depending on
         // which button is pressed
-        s.write('L' + parseInt(msg)+ '\n');
+        s.write(name + parseInt(msg)+ '\n');
     });
     socket.on('disconnect', function(){
         console.log('user disconnected');
