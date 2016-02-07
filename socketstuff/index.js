@@ -24,37 +24,48 @@ var rightclicks = 0;
 app.get('/', function(req, res){
     res.sendFile(__dirname + '/index.html');
 });
+app.get('/red_up.png', function (req, res) {
+    res.sendFile(__dirname + '/red_up.png');
+});
+app.get('/blue_down.png', function (req, res) {
+    res.sendFile(__dirname + '/blue_down.png');
+});
+app.get('/blue_up.png', function (req, res) {
+    res.sendFile(__dirname + '/blue_up.png');
+});
+app.get('/red_down.png', function (req, res) {
+    res.sendFile(__dirname + '/red_down.png');
+});
 
 
 // a person connects
 io.on('connection', function(socket){
     var team = Math.floor(Math.random() * 2);
     if(team == 0) {
-        name = 'L';
-        io.emit('team', 'red');
+        socket.join('red');
+        io.to('red').emit('team', 'red');
         left++;
     } else if(team == 1) {
-        name = 'R';
-        io.emit('team', 'blue');
+        socket.join('blue');
+        io.to('blue').emit('team', 'blue');
         right++;
     }
     console.log('a user connected\nTeam Breakdown--  Left: ' + left + ' Right: ' + right);
     socket.on('chat message', function(msg){
-        console.log('Choice: ' + msg + ' Team: ' + name);
+        console.log('Choice: ' + msg + ' Team: ' + team);
         io.emit('chat message', '1');
-        
+        var name = '' 
         // Update clicks for each team
         if(team == 0) {
+            name = 'L';
             leftclicks++;
         } else if(team == 1) {
+            name = 'R';
             rightclicks++;
         }
         // send 'L' or 'R' for left or right and '-1' or '1' depending on
         // which button is pressed
         //s.write(name + parseInt(msg)+ '\n');
-    });
-    socket.on('yes', function(msg){
-        console.log(msg);
     });
     socket.on('disconnect', function(){
         console.log('disconnected');
@@ -69,7 +80,7 @@ io.on('connection', function(socket){
 });
 
 http.listen(port, function(){
-      console.log('listening on *:' + port);
+      console.log('listening on port: ' + port);
 });
 
 

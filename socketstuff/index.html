@@ -15,21 +15,18 @@
     }
 
     </style>
-  </head>
+    </head>
 
   <body>
     <div class="container-fluid">
-            <input class = "img-responsive center-block" type="image" id="up_arrow" src="red_up.png" alt="up" align="middle" onclick="socket.emit('chat message', '1');" >
-<!--               <button id="arrow" type="UpHand" onclick="socket.emit('chat message', '1');" 
-                          class="glyphicon glyphicon-hand-up btn btn-lg center-block"></button> -->
-              <center><h1 class="center-block">TEAM <div id="team"></div></h1></center>
-
-            <input class = "img-responsive center-block" type="image" id="down_arrow" src="red_down.png" alt="up" align="middle" onclick="socket.emit('chat message', '-1');" >
-
-<!--               <button id="arrow" type="DownHand" onclick="socket.emit('chat message', '-1');" 
-                  class="glyphicon glyphicon-hand-down center-block btn"
-                  style="width:200px;height:200px"> -->
-              </button>
+        <!--  Top arrow -->
+        <input class = "img-responsive center-block" type="image" id="up_arrow" src=""
+        alt="up" align="middle" onclick="socket.emit('chat message', '1');" >
+        <!-- Center label with team name -->
+        <center><h1 class="center-block">TEAM <div id="team"></div></h1></center>
+        <!-- Bottom arrow -->      
+        <input class = "img-responsive center-block" type="image" id="down_arrow" src=""
+              alt="up" align="middle" onclick="socket.emit('chat message', '-1');" >
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
@@ -40,15 +37,18 @@
         socket.on('chat message', function(msg){
             clicks += 1;
         });
-        // $("button").css("background","green");
-        // socket.on('team', function(msg) {
-        // 	  $('div#team').html(msg);
-        //     if (msg === "blue") {
-        //       $("#up_arrow").attr('src','blue_up.png');
-        //       $("#down_arrow").attr('src','blue_down.png');
-        //     }
-        //     $("button").css("background",msg);
-        // });  
+         $("button").css("background","green");
+         socket.on('team', function(msg) {
+         	  $('div#team').html(msg);
+            if (msg === "blue") {
+              $("#up_arrow").attr('src','blue_up.png');
+              $("#down_arrow").attr('src','blue_down.png');
+            } else if (msg === "red") {
+              $("#up_arrow").attr('src','red_up.png');
+              $("#down_arrow").attr('src','red_down.png');    
+            }
+            $("button").css("background",msg);
+         });  
     </script>
   </body>
 </html>
